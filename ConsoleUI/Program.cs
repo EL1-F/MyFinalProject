@@ -7,17 +7,17 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        // ProductTest();
+        ProductTest();
         // CategoryTest();
         // OrderTest();
-        ProductDetailTest();
+        //ProductDetailTest();
     }
 
     private static void ProductDetailTest()
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetProductDetails())
+        foreach (var product in productManager.GetProductDetails().Data)
         {
             Console.WriteLine(product.ProductName+" -- "+product.CategoryName+" -- "+product.UnitsInStock);
         }
@@ -37,10 +37,20 @@ internal class Program
     {
         ProductManager productManager = new ProductManager(new EfProductDal());
 
-        foreach (var product in productManager.GetAllByCategoryId(2))
+        var result = productManager.GetAll();
+
+        if (result.Succeess)
         {
-            Console.WriteLine(product.ProductName);
+            foreach (var product in result.Data)
+            {
+                Console.WriteLine(product.ProductName);
+            }
         }
+        else
+        {
+            Console.WriteLine(result.Message);
+        }
+
     }
 
     private static void OrderTest()
